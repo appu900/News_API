@@ -1,5 +1,6 @@
 import { supportedMimes } from "../config/fileSystem.js";
 import {v4 as uuid} from "uuid";
+import fs from "fs";
 
 
 
@@ -23,5 +24,32 @@ export const bytesToMb = (bytes) =>{
 export const generateRandomNumber = () =>{
     let randomNumber =  uuid();
     return randomNumber;
+}
+
+
+export const getImageUrl = (imgName) =>{
+    return `${process.env.APP_URL}/images/${imgName}`
+}
+
+
+
+
+export const removeImage = (imageName) => {
+     const path = process.cwd() + "/public/images/" + imageName;
+     if(fs.existsSync(path)){
+        fs.unlinkSync(path);
+     }
+}
+
+
+export const uploadImage = (image) =>{
+    const imgExt = image?.name.split(".");
+    const imageName = generateRandomNumber() + "." + imgExt[1];
+    const uploadPath = process.cwd() + "/public/images/" + imageName;
+    image.mv(uploadPath, (error) => {
+        if (error) throw error;
+    });
+
+    return imageName;
 }
 

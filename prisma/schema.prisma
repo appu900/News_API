@@ -15,4 +15,18 @@ model Users {
   profile    String?
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
+  News       News[]
+}
+
+// * one user can post multiple news
+
+model News {
+  id         Int      @id @default(autoincrement())
+  user_id    Int
+  user       Users    @relation(fields: [user_id], references: [id])
+  title      String   @db.VarChar(255)
+  content    String
+  image      String   @db.VarChar(255)
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
 }
